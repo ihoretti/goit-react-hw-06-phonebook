@@ -1,13 +1,14 @@
 import { ThemeProvider } from 'styled-components';
 import { ToastContainer } from 'react-toastify';
 import { theme } from '../theme/theme';
-import { Contact } from './ContactList/ContactList';
+import { Contact, contacts, visibleContact } from './ContactList/ContactList';
 import Container from './Container/Container.styled';
 import { ContactForm } from './Form/Form';
 import { Filter } from './Filter/Filter';
 import { PrimaryTitle, SecondaryTitle } from './Titles/Titles';
 
 import 'react-toastify/dist/ReactToastify.css';
+import { ContactList, Notification } from './ContactList/ContactList.styled';
 
 export const initContacts = [
   { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
@@ -43,7 +44,13 @@ export const App = () => {
         >
           <SecondaryTitle>Contact</SecondaryTitle>
           <Filter title="Find contacts by name" />
-          <Contact />
+          {contacts.length > 0 && <ContactList />}
+          {contacts.length === 0 && (
+            <Notification>You have no contacts</Notification>
+          )}
+          {visibleContact.length === 0 && (
+            <Notification>contact not found</Notification>
+          )}
         </Container>
       </Container>
     </ThemeProvider>
