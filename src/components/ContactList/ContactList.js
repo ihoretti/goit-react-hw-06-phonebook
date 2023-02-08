@@ -1,16 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteContact } from 'redux/phoneBookSlice';
-import {
-  ContactList,
-  ItemsContact,
-  DeleteBtn,
-  Notification,
-} from './ContactList.styled';
+import { ContactList, ItemsContact, DeleteBtn } from './ContactList.styled';
+import { selectContacts, selectFilter } from 'redux/selectors';
 
 export const Contact = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts.contacts);
-  const query = useSelector(state => state.filter.filter);
+  const contacts = useSelector(selectContacts);
+  const query = useSelector(selectFilter);
 
   const getVisibleContact = () => {
     const normalizeFilter = query.toLocaleLowerCase();
@@ -24,23 +20,17 @@ export const Contact = () => {
 
   return (
     <ContactList>
-      {contacts.length === 0 ? (
-        <Notification>You have no contacts</Notification>
-      ) : visibleContact.length === 0 ? (
-        <Notification>contact not found</Notification>
-      ) : (
-        visibleContact.map(({ id, name, number }) => (
-          <ItemsContact key={id}>
-            {name}: {number}{' '}
-            <DeleteBtn
-              type="button"
-              onClick={() => dispatch(deleteContact({ id }))}
-            >
-              delete
-            </DeleteBtn>
-          </ItemsContact>
-        ))
-      )}
+      {visibleContact.map(({ id, name, number }) => (
+        <ItemsContact key={id}>
+          {name}: {number}{' '}
+          <DeleteBtn
+            type="button"
+            onClick={() => dispatch(deleteContact({ id }))}
+          >
+            delete
+          </DeleteBtn>
+        </ItemsContact>
+      ))}
     </ContactList>
   );
 };
